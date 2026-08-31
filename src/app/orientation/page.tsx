@@ -1,39 +1,67 @@
 'use client';
-import Link from 'next/link';
 import { useState } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Compass, Users, Laptop, Wrench, ArrowRight } from 'lucide-react';
 
-export default function OrientationPage() {
+export default function OrientationFlow() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
+  const [preferences, setPreferences] = useState<string[]>([]);
+
+  const handleSelect = async (trait: string) => {
+    const newPrefs = [...preferences, trait];
+    setPreferences(newPrefs);
+    
+    if (step < 2) {
+      setStep(step + 1);
+    } else {
+      // Simule l'envoi à l'API (à connecter avec un vrai système d'auth type NextAuth/Clerk)
+      await fetch('/api/profile', {
+        method: 'POST',
+        body: JSON.stringify({ userId: "test-user-id", preferences: newPrefs, educationLevel: "Bac" })
+      });
+      router.push('/dashboard');
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="bg-white p-8 rounded-3xl shadow-xl max-w-2xl w-full border border-slate-100">
-        <h1 className="text-3xl font-black text-slate-900 mb-3">Tu ne sais pas quoi faire ?</h1>
-        <p className="text-slate-500 text-sm mb-8">Découvre les domaines qui te correspondent vraiment.</p>
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-6">
+      <div className="max-w-3xl w-full">
+        <div className="mb-12 text-center">
+          <Compass className="w-16 h-16 text-blue-600 mx-auto mb-6" />
+          <h1 className="text-4xl font-black mb-2">Construisons ton profil IA</h1>
+          <p className="text-slate-500 font-bold">Étape {step} sur 2</p>
+        </div>
 
         {step === 1 && (
-          <div className="space-y-3 mb-8">
-            <p className="font-bold text-slate-800 text-sm mb-2">Quel environnement de travail préfères-tu ?</p>
-            {["Sur le terrain / En mouvement", "En bureau / Sur ordinateur", "En contact avec les clients", "En extérieur / Sport"].map((opt, i) => (
-              <button key={i} onClick={() => setStep(2)} className="w-full p-4 rounded-2xl border-2 border-slate-100 text-left font-extrabold hover:border-indigo-600 hover:bg-indigo-50 transition flex justify-between">
-                {opt} <ArrowRight size={18} className="text-slate-400"/>
+          <div className="space-y-6 animate-fade-in">
+            <h2 className="text-2xl font-bold text-center mb-8">Dans ton futur quotidien, tu préfères...</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button onClick={() => handleSelect('contact')} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 shadow-sm transition-all text-left flex items-center gap-4">
+                <div className="p-4 bg-blue-50 text-blue-600 rounded-xl"><Users size={28}/></div>
+                <span className="font-bold text-lg">Échanger, conseiller et convaincre</span>
               </button>
-            ))}
+              <button onClick={() => handleSelect('tech')} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-indigo-500 shadow-sm transition-all text-left flex items-center gap-4">
+                <div className="p-4 bg-indigo-50 text-indigo-600 rounded-xl"><Laptop size={28}/></div>
+                <span className="font-bold text-lg">Analyser, coder et résoudre des problèmes</span>
+              </button>
+            </div>
           </div>
         )}
 
         {step === 2 && (
-          <div className="bg-indigo-50 p-6 rounded-2xl mb-8">
-            <h3 className="font-black text-indigo-900 text-lg mb-2">Tes 3 pistes recommandées 🐱</h3>
-            <ul className="space-y-2 text-sm font-semibold text-indigo-800">
-              <li>• Commerce & Vente (BTS NDRC)</li>
-              <li>• Management du Sport (STAPS)</li>
-              <li>• Hôtellerie Internationale</li>
-            </ul>
+          <div className="space-y-6 animate-fade-in">
+            <h2 className="text-2xl font-bold text-center mb-8">Quel est ton objectif principal ?</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button onClick={() => handleSelect('quick_job')} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-emerald-500 shadow-sm transition-all text-left flex items-center gap-4">
+                <span className="font-bold text-lg">Entrer rapidement sur le marché du travail</span>
+              </button>
+              <button onClick={() => handleSelect('long_studies')} className="p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-500 shadow-sm transition-all text-left flex items-center gap-4">
+                <span className="font-bold text-lg">Faire des études longues pour viser haut</span>
+              </button>
+            </div>
           </div>
         )}
-        <Link href="/" className="text-slate-500 font-bold text-sm hover:text-black">Retour à l'accueil</Link>
       </div>
     </div>
   );

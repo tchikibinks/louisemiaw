@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  profile       Profile?
+  applications  Application[]
+  favorites     Favorite[]
+  createdAt     DateTime       @default(now())
+}
+
+model Profile {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  educationLevel   String?
+  targetDomain     String?
+  targetLocation   String?
+  skills           String[] 
+  preferences      Json?    // Stocke les choix de l'orientation
+}
+
+model Formation {
+  id              String   @id @default(cuid())
+  title           String
+  level           String
+  domain          String
+  institution     String
+  location        String
+  duration        Int
+  isAlternance    Boolean  @default(false)
+  description     String
+  skillsTaught    String[]
+  possibleCareers String[] // Les chemins possibles
+}
+
+model JobOffer {
+  id              String        @id @default(cuid())
+  title           String
+  companyName     String
+  location        String
+  type            String        // CDI, ALTERNANCE, STAGE
+  salary          String?
+  requirements    String[]
+  applications    Application[]
+  favorites       Favorite[]
+  createdAt       DateTime      @default(now())
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  offerId   String
+  offer     JobOffer @relation(fields: [offerId], references: [id])
+  status    String   @default("PENDING") // PENDING, INTERVIEW, REJECTED
+  appliedAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  offerId   String
+  offer     JobOffer @relation(fields: [offerId], references: [id])
+
+  @@unique([userId, offerId])
+}
