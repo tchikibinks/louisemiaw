@@ -1,136 +1,68 @@
 'use client';
 import Link from 'next/link';
-import { Search, MapPin, Moon, Sun, Sparkles } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Search, MapPin, Briefcase, ArrowRight, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
-export default function HomePage() {
-  const [isDark, setIsDark] = useState(false);
+export default function AlternancePage() {
+  const [search, setSearch] = useState('');
+  
+  const offers = [
+    { title: "Développeur Fullstack React/Next.js", company: "TechNova", location: "Paris / Remote", type: "Alternance (1 ou 2 ans)", stipend: "1 250 € / mois", tag: "Tech" },
+    { title: "Assistant Marketing Digital & Growth", company: "ScaleUp Agency", location: "Lyon", type: "Alternance", stipend: "1 100 € / mois", tag: "Marketing" },
+    { title: "Chargé de Recrutement & RH", company: "PeopleFirst", location: "Toulouse", type: "Alternance", stipend: "1 050 € / mois", tag: "RH" },
+    { title: "Product Manager Junior", company: "Stellar App", location: "Bordeaux", type: "Alternance", stipend: "1 300 € / mois", tag: "Produit" },
+  ];
 
-  useEffect(() => {
-    if (document.documentElement.classList.contains('dark')) {
-      setIsDark(true);
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add('dark');
-      setIsDark(true);
-    }
-  };
+  const filtered = offers.filter(o => o.title.toLowerCase().includes(search.toLowerCase()) || o.location.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 flex flex-col font-sans transition-colors duration-300">
-      
-      {/* HEADER */}
-      <header className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 sticky top-0 z-50 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl transition-transform group-hover:scale-110">🐱</span>
-            <span className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
-              louisemiaw<span className="text-blue-600">.</span>
-            </span>
-          </Link>
-          
-          <nav className="hidden lg:flex gap-6 font-semibold text-sm text-slate-500 dark:text-slate-400 items-center">
-            <Link href="/alternance" className="hover:text-slate-900 dark:hover:text-white transition">Alternance</Link>
-            <Link href="/stages" className="hover:text-slate-900 dark:hover:text-white transition">Stages</Link>
-            <Link href="/emploi" className="hover:text-slate-900 dark:hover:text-white transition">Emploi</Link>
-            <Link href="/international" className="hover:text-slate-900 dark:hover:text-white transition">International</Link>
-            <Link href="/cv-builder" className="hover:text-slate-900 dark:hover:text-white transition">CV & Lettre</Link>
-          </nav>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 p-6 md:p-12 font-sans transition-colors">
+      <div className="max-w-6xl mx-auto">
+        <header className="flex justify-between items-center mb-12">
+          <Link href="/" className="font-black text-2xl flex items-center gap-2">🐱 louisemiaw<span className="text-blue-600">.</span></Link>
+          <Link href="/" className="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-sm font-bold rounded-full hover:bg-slate-300 dark:hover:bg-slate-700 transition">Accueil</Link>
+        </header>
 
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={toggleTheme} 
-              className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition"
-              title="Changer de thème"
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <Link href="/projet" className="px-5 py-2.5 text-sm font-bold text-white bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 rounded-full shadow-sm transition hidden sm:block">
-              Créer mon profil
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* HERO SECTION */}
-      <main className="flex-1 flex flex-col items-center text-center px-4 pt-32 pb-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 transition-colors duration-300">
-        
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold mb-8 transition-colors">
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-          Le moteur de matching nouvelle génération 🍣
+        <div className="mb-10 text-center md:text-left">
+          <span className="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 text-xs font-bold">🎯 Alternance 2026-2027</span>
+          <h1 className="text-4xl md:text-5xl font-black mt-3 mb-4">Trouve ton contrat pro ou ton apprentissage</h1>
+          <p className="text-slate-500 dark:text-slate-400 max-w-xl">Des centaines d'entreprises partenaires qui recrutent de vrais talents sans blabla.</p>
         </div>
 
-        <h1 className="text-5xl sm:text-7xl font-black tracking-tight max-w-4xl mb-6 text-slate-900 dark:text-white leading-[1.1] transition-colors">
-          Et toi, tu fais quoi <br/>
-          <span className="text-blue-600">l’année prochaine ?</span>
-        </h1>
-        
-        <p className="text-lg text-slate-500 dark:text-slate-400 max-w-2xl mb-12 font-medium transition-colors">
-          Découvre l’emploi, l’alternance ou l’expérience à l’étranger qui correspond <strong className="text-slate-900 dark:text-white">réellement</strong> à ton profil. Sans stress, sans perdre de temps.
-        </p>
-
-        {/* BARRE DE RECHERCHE */}
-        <div className="bg-white dark:bg-slate-900 p-2 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-2 max-w-3xl w-full transition-all hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-          
-          <div className="flex-1 flex items-center px-5 py-3.5 bg-transparent rounded-full focus-within:bg-slate-50 dark:focus-within:bg-slate-800/50 transition">
-            <Search className="text-slate-400 mr-3 shrink-0" size={20} />
-            <input 
-              type="text" 
-              placeholder="Que recherches-tu ?" 
-              className="bg-transparent outline-none w-full font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" 
-            />
-          </div>
-
-          <div className="hidden md:block w-px bg-slate-100 dark:bg-slate-800 my-2"></div>
-
-          <div className="flex-1 flex items-center px-5 py-3.5 bg-transparent rounded-full focus-within:bg-slate-50 dark:focus-within:bg-slate-800/50 transition">
-            <MapPin className="text-slate-400 mr-3 shrink-0" size={20} />
-            <input 
-              type="text" 
-              placeholder="Dans quelle ville ?" 
-              className="bg-transparent outline-none w-full font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500" 
-            />
-          </div>
-
-          <Link href="/alternance" className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full transition flex items-center justify-center gap-2 shadow-md dark:shadow-none">
-            Rechercher
-          </Link>
-        </div>
-      </main>
-
-      {/* SECTION FONCTIONNALITÉS */}
-      <section className="max-w-7xl mx-auto px-6 py-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 hover:border-blue-100 transition-colors">
-          <div className="text-3xl mb-4">🎯</div>
-          <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Matching sur-mesure</h3>
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Notre IA analyse tes compétences et te propose uniquement ce qui te correspond.</p>
-        </div>
-        
-        <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 hover:border-blue-100 transition-colors">
-          <div className="text-3xl mb-4">🍣</div>
-          <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Alternance & Emploi</h3>
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Des milliers d'offres qualifiées pour lancer ta carrière dans les meilleures conditions.</p>
+        {/* Barre de recherche dynamique */}
+        <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 mb-10 flex items-center gap-3">
+          <Search className="text-slate-400 ml-2" size={20} />
+          <input 
+            type="text" 
+            placeholder="Rechercher par poste ou ville (ex: Paris, Marketing...)" 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-transparent outline-none font-semibold text-slate-900 dark:text-white"
+          />
         </div>
 
-        <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 hover:border-blue-100 transition-colors">
-          <div className="text-3xl mb-4">🌍</div>
-          <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Départ à l'étranger</h3>
-          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Stages et jobs internationaux avec options de logement inclus pour voyager l'esprit léger.</p>
+        {/* Liste des offres */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {filtered.map((offer, idx) => (
+            <div key={idx} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 transition shadow-sm flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-3">
+                  <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full text-xs font-bold">{offer.tag}</span>
+                  <span className="font-black text-blue-600 dark:text-blue-400 text-sm">{offer.stipend}</span>
+                </div>
+                <h3 className="font-bold text-xl mb-1">{offer.title}</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm mb-4 font-medium">{offer.company} • {offer.location}</p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <span className="text-xs font-bold text-slate-400">{offer.type}</span>
+                <Link href="/projet" className="px-4 py-2 bg-slate-900 dark:bg-blue-600 text-white text-xs font-bold rounded-xl hover:opacity-90 transition flex items-center gap-1">
+                  Postuler en 1 clic <ArrowRight size={14}/>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-8 border-t border-slate-100 dark:border-slate-800 text-center flex flex-col items-center justify-center gap-2 text-sm text-slate-400 dark:text-slate-500 font-medium transition-colors">
-        <span>louisemiaw. © 2026</span>
-        <span className="text-xs">Fait par Bilal à Tarbes</span>
-      </footer>
-
+      </div>
     </div>
   );
 }
