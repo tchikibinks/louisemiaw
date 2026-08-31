@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { BrainCircuit, CheckCircle2, AlertTriangle, Briefcase, MapPin, SlidersHorizontal, ThumbsDown } from 'lucide-react';
+import { BrainCircuit, CheckCircle2, AlertTriangle, Briefcase, MapPin, SlidersHorizontal, ThumbsDown, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ExplorerPage() {
